@@ -5,8 +5,10 @@ import { config } from "dotenv";
 config()
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY // This is also the default, can be omitted
+  apiKey: process.env.OPENAI_API_KEY 
 });
+
+console.log(process.env.OPENAI_API_KEY )
 
 const app = express();
 const port = 3001;
@@ -27,13 +29,22 @@ async function gptResponse(gptQuery,res ) {
 }
 app.post("/", (req, res) => {
   const message = req?.body?.message;
-  console.log({message})
+  let language  = "english"
+  console.log(message.split(" ")[0])
+  if (/^[a-zA-Z]+$/.test(message.split(" ")[0])) //if the English language 
+  {
+      language = "arabic"
+  } 
+ 
+
   const gptQuery = `
-     1. Summarize the following data : "${message}" in no more than 500 words.
-     2. If the data is in english language give the response only in arabic language & don't give the response in english else give the response in english language.
-     3. remove \ \ from the response and return in <p> </p> tags.
-     4. don't add  these characters in the response ("/","\", \n,\n, ",")
+     1. Give the response in : ${language} language.
+     2. remove " \ \ "from the response and return in <p> </p> tags.
+     3. don't add  these characters in the response ("/","\", \n,\n, ",\n\n)
+
+     follow the above rules to  Summarize the following data : "${message}" in 800 words.
   `;
+  console.log({gptQuery})
   gptResponse(gptQuery, res);
 });
 
