@@ -8,11 +8,14 @@ passport.use(
       clientID: process.env["GOOGLE_CLIENT_ID"],
       clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
       callbackURL: "/auth/google/callback",
-      scope: ["profile"],
+      scope: ["profile","email"],
+      // state: true,
+
     },
-    function verify(accessToken, refreshToken, profile, done) {
-      console.log({ accessToken, refreshToken, profile });
-      return done(null, profile);
+    function verify(issuer, profile, cb) {
+      const prf = profile?._json
+
+      return cb(null, profile);
 
     }
   )
