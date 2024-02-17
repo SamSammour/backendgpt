@@ -14,12 +14,6 @@ const createError = require('http-errors');
 var path = require('path');
 const cors = require('cors');
 
-
-
-
-
-
-
 const app = express();
 const port = process.env.PORT || 3000;
 
